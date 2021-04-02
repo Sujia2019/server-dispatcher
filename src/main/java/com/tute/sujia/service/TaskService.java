@@ -27,5 +27,5 @@ public interface TaskService {
      * 加入任务队列
      * @return
      */
-    public ReturnT<?> insertQueue();
+    public ReturnT<?> insertQueue(Task task);
 }

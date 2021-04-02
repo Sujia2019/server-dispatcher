@@ -7,6 +7,7 @@ import com.tute.sujia.dao.TaskMapper;
 import com.tute.sujia.entity.Dispatcher;
 import com.tute.sujia.entity.Task;
 import com.tute.sujia.router.LoadBalance;
+import com.tute.sujia.service.DispatcherService;
 import com.tute.sujia.service.ServerService;
 import com.tute.sujia.service.TaskService;
 import com.tute.sujia.utils.Constants;
@@ -39,6 +40,8 @@ public class TaskServiceImpl implements TaskService {
     ServerMapper serverMapper;
     @Autowired
     ServerService serverService;
+    @Autowired
+    DispatcherService dispatcherService;
     @Override
     public ReturnT<?> create(Task task) {
         if (null !=taskMapper.getTaskByName(task.getTask_name())){
@@ -89,9 +92,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public ReturnT<?> insertQueue() {
-        return null;
+    public ReturnT<?> insertQueue(Task task) {
+        return new ReturnT<>(Constants.SUCCESS, dispatcherService.getDispatcher().dispatcher.dispatch(task));
     }
-
 
 }

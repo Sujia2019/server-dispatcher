@@ -20,12 +20,13 @@ public class RpcUtils {
     }
     public static void exec(final String address,String script){
         Demo demo = (Demo) getImpl(address);
-        System.out.println("=========");
-        Object say = demo.sayHello("sujia");
-        LOGGER.info("======执行sayHello方法:"+say);
-        // 远程执行任务
         LOGGER.info("======开始远程执行脚本任务======");
+        // 远程执行任务
         demo.exec(script);
+
+//        System.out.println("=========");
+//        Object say = demo.sayHello("sujia");
+//        LOGGER.info("======执行sayHello方法:"+say);
     }
 
     public static void addService(){

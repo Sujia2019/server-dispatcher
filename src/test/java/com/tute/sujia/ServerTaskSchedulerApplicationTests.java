@@ -4,6 +4,7 @@ import com.tute.sujia.entity.Server;
 import com.tute.sujia.entity.Task;
 import com.tute.sujia.net.RpcReferenceBean;
 import com.tute.sujia.router.LoadBalance;
+import com.tute.sujia.service.DispatcherService;
 import com.tute.sujia.service.ServerService;
 import com.tute.sujia.service.ServiceService;
 import com.tute.sujia.service.TaskService;
@@ -15,13 +16,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.TreeSet;
 
 @SpringBootTest
-class ServerTaskDispatcherApplicationTests {
+class ServerTaskSchedulerApplicationTests {
     @Autowired
     TaskService taskService;
     @Autowired
     ServiceService serviceService;
     @Autowired
     ServerService serverService;
+    @Autowired
+    DispatcherService dispatcherService;
 
     @Test
     void contextLoads() {
@@ -40,7 +43,7 @@ class ServerTaskDispatcherApplicationTests {
         server1.setServer_pwd("19990315");
         server1.setServer_detail("虚拟机1号");
         server1.setServer_status(true);
-        server1.setMemory(3096);
+        server1.setServer_memory(3096);
         server1.setCreator("admin");
 
         Server server2 = new Server();
@@ -51,7 +54,7 @@ class ServerTaskDispatcherApplicationTests {
         server2.setServer_pwd("19990315");
         server2.setServer_detail("虚拟机2号");
         server2.setServer_status(true);
-        server2.setMemory(3096);
+        server2.setServer_memory(3096);
         server2.setCreator("admin");
 
         Server server3 = new Server();
@@ -62,7 +65,7 @@ class ServerTaskDispatcherApplicationTests {
         server3.setServer_pwd("19990315");
         server3.setServer_detail("虚拟机3号");
         server3.setServer_status(true);
-        server3.setMemory(3096);
+        server3.setServer_memory(3096);
         server3.setCreator("admin");
         serverService.registServer(server1);
         serverService.registServer(server2);
@@ -187,10 +190,14 @@ class ServerTaskDispatcherApplicationTests {
     }
 
     /**
-     * 测试任务调度
+     * 测试任务调度算法
      */
     @Test
     void scheduler(){
+        // 设置策略
+        dispatcherService.setDispatcher("FIFO");
+        // 执行策略
+        dispatcherService.runByDispatcher();
 
     }
 
