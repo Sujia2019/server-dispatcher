@@ -66,5 +66,10 @@ public class ServerServiceImpl implements ServerService {
         return add;
     }
 
+    @Override
+    public Server getServer(String name) {
+        return serverMapper.getServerByName(name);
+    }
+
 
 }

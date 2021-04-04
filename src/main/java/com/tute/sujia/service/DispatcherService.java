@@ -4,6 +4,8 @@ import com.tute.sujia.dispatcher.Scheduler;
 import com.tute.sujia.entity.Dispatcher;
 import com.tute.sujia.utils.ReturnT;
 
+import java.util.TreeSet;
+
 
 public interface DispatcherService {
 
@@ -20,4 +22,8 @@ public interface DispatcherService {
     public Scheduler getDispatcher();
 
     public ReturnT<?> runByDispatcher();
+
+    public void setAddress(TreeSet<String> address);
+
+    public Dispatcher getLoadBalance(String name);
 }

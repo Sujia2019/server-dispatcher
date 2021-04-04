@@ -19,5 +19,7 @@ public interface ServerService {
 
     TreeSet<String> getServers(String json);
 
+    Server getServer(String name);
+
 
 }

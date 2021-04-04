@@ -37,7 +37,7 @@ public class RpcUtils {
         referenceBean.setIface(clazz);
     }
 
-    private static Object getImpl(final String address){
+    public static Object getImpl(final String address) {
         referenceBean.setAddress(address);
         referenceBean.setVersion(null);
         referenceBean.init();
@@ -59,8 +59,5 @@ public class RpcUtils {
             e.printStackTrace();
             return e.getMessage();
         }
-
-
-
     }
 }

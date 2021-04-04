@@ -14,10 +14,10 @@ public interface DispatcherMapper {
 
     @Insert("insert into dispatcher(type,custom_name,router_ZN,router_EN,address,available,properties) " +
             "values(#{type},#{custom_name},#{router_ZN},#{router_EN},#{address},#{available},#{properties})")
-    void insert(Dispatcher dispatcher);
+    int insert(Dispatcher dispatcher);
 
-    @Delete("delete from dispatcher where id=#{id}")
-    void delete(int id);
+    @Delete("delete from dispatcher where custom_name=#{name}")
+    int delete(String name);
 
     @Update("<script> update dispatcher set custom_name=#{custom_name} and available=#{available}" +
             "   <if test=\"null != type\">" +
@@ -37,12 +37,12 @@ public interface DispatcherMapper {
             "   </if>" +
             "       where id=#{id}" +
             "   </script>")
-    void modify(Dispatcher dispatcher);
+    int modify(Dispatcher dispatcher);
 
     @Select("select * from dispatcher")
-    List<?> getAll();
+    List<Dispatcher> getAll();
     @Select("select * from dispatcher where custom_name like concat('%',#{custom_name},'%')")
-    List<?> getByName(String custom_name);
+    List<Dispatcher> getByName(String custom_name);
 
     @Select("select * from dispatcher where id=#{id}")
     Dispatcher getById(int id);

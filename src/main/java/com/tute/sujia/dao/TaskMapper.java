@@ -33,9 +33,9 @@ public interface TaskMapper {
     int modify(Task task);
 
     @Select("select * from task")
-    List<?> getAll();
+    List<Task> getAll();
     @Select("select * from task where task_name like concat('%',#{name},'%')")
-    List<?> getByName(String name);
+    List<Task> getByName(String name);
     @Select("select * from task where id=#{id}")
     Task getById(int id);
 

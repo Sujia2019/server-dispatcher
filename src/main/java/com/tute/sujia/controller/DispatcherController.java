@@ -36,4 +36,10 @@ public class DispatcherController {
         return dispatcherService.getDispatchers();
     }
 
+    @RequestMapping(value = "setDispatcher", method = RequestMethod.POST)
+    @ResponseBody
+    public ReturnT<?> setDispatcher(@RequestBody String name) {
+        return dispatcherService.setDispatcher(name);
+    }
+
 }

@@ -50,4 +50,7 @@ public interface ServerMapper {
 
     @Select("select * from server where server_name=#{name}")
     Server getServerByName(String name);
+
+    @Select("select * from server where server_add=#{address}")
+    Server getServerByAddress(String address);
 }

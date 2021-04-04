@@ -9,5 +9,5 @@ public abstract class TaskScheduler {
 
     public abstract String dispatch(Task task);
 
-    public abstract String exec();
+    public abstract void exec();
 }

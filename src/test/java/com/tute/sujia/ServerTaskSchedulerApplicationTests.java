@@ -1,5 +1,6 @@
 package com.tute.sujia;
 
+import com.tute.sujia.dao.TaskMapper;
 import com.tute.sujia.entity.Server;
 import com.tute.sujia.entity.Task;
 import com.tute.sujia.net.RpcReferenceBean;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 @SpringBootTest
@@ -25,6 +28,8 @@ class ServerTaskSchedulerApplicationTests {
     ServerService serverService;
     @Autowired
     DispatcherService dispatcherService;
+    @Autowired
+    TaskMapper taskMapper;
 
     @Test
     void contextLoads() {
@@ -87,6 +92,8 @@ class ServerTaskSchedulerApplicationTests {
 //            add("192.168.56.112:8888");
 //            add("192.168.56.113:8888");
 //        }};
+
+        // 根据负载均衡策略执行任务
         String address = LoadBalance.match("CONSISTENT_HASH",LoadBalance.ROUND)
                 .rpcLoadBalance.route(serviceKey,addressSet);
         taskService.exec(address,"test");
@@ -118,7 +125,7 @@ class ServerTaskSchedulerApplicationTests {
         System.out.println("==============");
         // 执行方法
         Object say = demo.sayHello("sujia");
-        System.out.println("======执行sayHello方法:"+say);
+        System.out.println("======执行sayHello方法,返回结果 :" + say);
 
     }
 
@@ -154,7 +161,7 @@ class ServerTaskSchedulerApplicationTests {
     void createTask(){
         Task task = new Task();
         task.setTask_name("xxx1");
-        task.setScript("mkdir /home/sujia/xxx1");
+        task.setScript("mkdir /home/sujia/project/xxx1");
         task.setDetail("测试创建任务1");
         task.setCreator("admin");
         task.setPriority(0);
@@ -162,7 +169,7 @@ class ServerTaskSchedulerApplicationTests {
 
         Task task2 = new Task();
         task2.setTask_name("xxx2");
-        task2.setScript("mkdir /home/sujia/xxx2");
+        task2.setScript("mkdir /home/sujia/project/xxx2");
         task2.setDetail("测试创建任务2");
         task2.setCreator("admin");
         task2.setPriority(1);
@@ -194,9 +201,21 @@ class ServerTaskSchedulerApplicationTests {
      */
     @Test
     void scheduler(){
+        TreeSet<String> addressSet = new TreeSet<String>() {{
+            add("192.168.56.111:8888");
+            add("192.168.56.115:8888");
+            add("192.168.56.114:8888");
+        }};
         // 设置策略
         dispatcherService.setDispatcher("FIFO");
-        // 执行策略
+        // 设置服务器地址
+        dispatcherService.setAddress(addressSet);
+        // 添加任务
+        List<String> taskNames = new ArrayList<>();
+        taskNames.add("xxx1");
+        taskNames.add("xxx2");
+        taskService.insertQueue(taskNames);
+        // 按策略执行
         dispatcherService.runByDispatcher();
 
     }

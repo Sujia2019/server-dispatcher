@@ -3,6 +3,7 @@ package com.tute.sujia.dispatcher;
 import com.tute.sujia.dispatcher.impl.CapacityTaskScheduler;
 import com.tute.sujia.dispatcher.impl.FIFOTaskScheduler;
 import com.tute.sujia.dispatcher.impl.FairTaskScheduler;
+import org.springframework.stereotype.Component;
 
 public enum Scheduler {
     // 先进先出顺序调度

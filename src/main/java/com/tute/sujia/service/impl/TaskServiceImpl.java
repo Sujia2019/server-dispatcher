@@ -92,8 +92,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public ReturnT<?> insertQueue(Task task) {
-        return new ReturnT<>(Constants.SUCCESS, dispatcherService.getDispatcher().dispatcher.dispatch(task));
+    public ReturnT<?> insertQueue(List<String> taskNames) {
+        for (String name : taskNames) {
+            Task task = taskMapper.getTaskByName(name);
+            if (task != null) {
+                dispatcherService.getDispatcher().dispatcher.dispatch(task);
+            } else {
+                LOGGER.error("无效的任务：{}", name);
+            }
+        }
+        return new ReturnT<>(Constants.SUCCESS, "添加成功");
     }
 
 }

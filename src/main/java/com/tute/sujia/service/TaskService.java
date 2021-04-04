@@ -4,6 +4,8 @@ import com.tute.sujia.entity.Task;
 import com.tute.sujia.utils.ReturnT;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 public interface TaskService {
 
@@ -27,5 +29,5 @@ public interface TaskService {
      * 加入任务队列
      * @return
      */
-    public ReturnT<?> insertQueue(Task task);
+    public ReturnT<?> insertQueue(List<String> taskNames);
 }

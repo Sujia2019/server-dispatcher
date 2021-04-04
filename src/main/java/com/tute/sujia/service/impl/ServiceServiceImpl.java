@@ -82,7 +82,7 @@ public class ServiceServiceImpl implements ServiceService {
             return new ReturnT<>(Constants.FAIL,"负载均衡方法不存在，请检查参数或刷新页面");
         }
         String address ;
-        Object response;
+        Object response = "";
         if (dispatcher.isAvailable()){
             // 获取地址
             TreeSet<String> add = serverService.getServers(dispatcher.getAddress());
@@ -90,8 +90,16 @@ public class ServiceServiceImpl implements ServiceService {
             address =LoadBalance.match(services.getLoad_balance(),LoadBalance.ROUND)
                     .rpcLoadBalance.route(services.getService_route(),add);
             // RPC调用
-            response = RpcUtils.testRpc(address,services.getMethod_name(),
-                    ClassUtil.getTypeClass(services.getParam_type()),params);
+//            response = RpcUtils.testRpc(address,services.getMethod_name(),
+//                    ClassUtil.getTypeClass(services.getParam_type()),params);
+
+            if (services.getMethod_name().equals("sayHello")) {
+                Demo demo = (Demo) RpcUtils.getImpl(address);
+                response = demo.sayHello(params[0].toString());
+            } else if (services.getMethod_name().equals("exec")) {
+                RpcUtils.exec(address, params[0].toString());
+                response = "正在地址为" + address + "的地址上执行脚本" + params[0].toString();
+            }
         }else{
             return new ReturnT<>(Constants.FAIL,"负载均衡方法暂不可用");
         }
