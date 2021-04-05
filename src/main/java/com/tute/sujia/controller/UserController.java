@@ -40,8 +40,14 @@ public class UserController {
 
     @RequestMapping(value = "delete",method = RequestMethod.POST)
     @ResponseBody
-    public ReturnT<?> modify(@RequestBody String account){
+    public ReturnT<?> delete(@RequestBody String account) {
         return userService.delUser(account);
+    }
+
+    @RequestMapping(value = "getInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public ReturnT<?> getInfo(@RequestParam String user_account) {
+        return userService.getInfo(user_account);
     }
 
 }

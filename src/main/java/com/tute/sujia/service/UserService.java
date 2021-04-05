@@ -15,4 +15,6 @@ public interface UserService {
     public ReturnT<?> delUser(String userAccount);
 
     public ReturnT<?> getUsers();
+
+    public ReturnT<?> getInfo(String user_account);
 }

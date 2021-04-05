@@ -35,4 +35,5 @@ public interface UserMapper {
     @Select("select * from user where user_account=#{user_account} and user_pwd=#{user_pwd}")
     User getUserByAccountAndPwd(User user);
 
+
 }

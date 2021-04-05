@@ -46,4 +46,9 @@ public class UserServiceImpl implements UserService {
     public ReturnT<?> getUsers() {
         return new ReturnT<>(Constants.SUCCESS, userMapper.getAll());
     }
+
+    @Override
+    public ReturnT<?> getInfo(String user_account) {
+        return new ReturnT<>(Constants.SUCCESS, userMapper.getByAccount(user_account));
+    }
 }

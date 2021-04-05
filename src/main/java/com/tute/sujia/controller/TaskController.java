@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.tute.sujia.entity.Dispatcher;
 import com.tute.sujia.entity.Server;
 import com.tute.sujia.entity.Task;
+import com.tute.sujia.entity.TaskDTO;
 import com.tute.sujia.router.LoadBalance;
 import com.tute.sujia.service.DispatcherService;
 import com.tute.sujia.service.ServerService;
@@ -74,22 +75,23 @@ public class TaskController {
     /**
      * 执行任务---经过负载均衡策略
      *
-     * @param taskName,loadName
+     * @param taskDTO
      * @return
      */
     @RequestMapping(value = "execLoadBalance", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnT<?> execLoadBalance(@RequestBody String taskName, String loadName) {
-        Dispatcher loadBalance = dispatcherService.getLoadBalance(loadName);
-        TreeSet<String> addressSet;
-        String address;
+    public ReturnT<?> execLoadBalance(@RequestBody TaskDTO taskDTO) {
+        String loadName = taskDTO.getLoadBalance();
         if (Strings.isBlank(loadName)) {
             return new ReturnT<>(Constants.FAIL, "请选择负载均衡策略再执行");
         }
+        Dispatcher loadBalance = dispatcherService.getLoadBalance(taskDTO.getLoadBalance());
+        TreeSet<String> addressSet;
+        String address;
         if (loadBalance != null) {
             addressSet = serverService.getServers(loadBalance.getAddress());
-            address = LoadBalance.match(loadName, LoadBalance.ROUND).rpcLoadBalance.route(taskName, addressSet);
-            return taskService.exec(address, taskName);
+            address = LoadBalance.match(loadName, LoadBalance.ROUND).rpcLoadBalance.route(taskDTO.getTaskName(), addressSet);
+            return taskService.exec(address, taskDTO.getTaskName());
         }
         return new ReturnT<>(Constants.FAIL, "未找到负载均衡规则");
     }
