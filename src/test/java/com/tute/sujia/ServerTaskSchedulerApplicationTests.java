@@ -197,10 +197,10 @@ class ServerTaskSchedulerApplicationTests {
     }
 
     /**
-     * 测试任务调度算法
+     * 测试FIFO任务调度算法
      */
     @Test
-    void scheduler(){
+    void schedulerFIFO() {
         TreeSet<String> addressSet = new TreeSet<String>() {{
             add("192.168.56.111:8888");
             add("192.168.56.115:8888");
@@ -217,8 +217,51 @@ class ServerTaskSchedulerApplicationTests {
         taskService.insertQueue(taskNames);
         // 按策略执行
         dispatcherService.runByDispatcher();
-
     }
 
+    /**
+     * 测试CAPACITY任务调度算法
+     */
+    @Test
+    void schedulerCAPACITY() {
+        TreeSet<String> addressSet = new TreeSet<String>() {{
+            add("192.168.56.111:8888");
+            add("192.168.56.115:8888");
+            add("192.168.56.114:8888");
+        }};
+        // 设置策略
+        dispatcherService.setDispatcher("CAPACITY");
+        // 设置服务器地址
+        dispatcherService.setAddress(addressSet);
+        // 添加任务
+        List<String> taskNames = new ArrayList<>();
+        taskNames.add("little");
+        taskNames.add("large");
+        taskService.insertQueue(taskNames);
+        // 按策略执行
+        dispatcherService.runByDispatcher();
+    }
 
+    /**
+     * 测试Fair任务调度算法
+     */
+    @Test
+    void schedulerFair() {
+        TreeSet<String> addressSet = new TreeSet<String>() {{
+            add("192.168.56.111:8888");
+            add("192.168.56.115:8888");
+            add("192.168.56.114:8888");
+        }};
+        // 设置策略
+        dispatcherService.setDispatcher("FAIR");
+        // 设置服务器地址
+        dispatcherService.setAddress(addressSet);
+        // 添加任务
+        List<String> taskNames = new ArrayList<>();
+        taskNames.add("fair");
+        taskNames.add("xxx1");
+        taskService.insertQueue(taskNames);
+        // 按策略执行
+        dispatcherService.runByDispatcher();
+    }
 }

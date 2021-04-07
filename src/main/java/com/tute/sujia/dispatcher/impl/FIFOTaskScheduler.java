@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -41,7 +42,7 @@ public class FIFOTaskScheduler extends TaskScheduler {
     }
 
     @Override
-    public void setAddress(TreeSet<String> addressSet) {
+    public void setAddress(TreeSet<String> addressSet, Map<String, Integer> addressCapacity) {
         FIFOTaskScheduler.addressSet = addressSet;
     }
 

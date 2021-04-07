@@ -1,25 +1,33 @@
 package com.tute.sujia.service.impl;
 
-import com.google.gson.Gson;
 import com.tute.sujia.dao.DispatcherMapper;
+import com.tute.sujia.dao.ServerMapper;
 import com.tute.sujia.dispatcher.Scheduler;
 import com.tute.sujia.entity.Dispatcher;
+import com.tute.sujia.entity.Server;
 import com.tute.sujia.service.DispatcherService;
 import com.tute.sujia.service.ServerService;
 import com.tute.sujia.utils.Constants;
 import com.tute.sujia.utils.ReturnT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 
 @Service
 public class DispatcherServiceImpl implements DispatcherService {
     private static Scheduler scheduler = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(DispatcherServiceImpl.class);
     @Autowired
     ServerService serverService;
     @Autowired
     DispatcherMapper dispatcherMapper;
+    @Autowired
+    ServerMapper serverMapper;
 
     @Override
     public ReturnT<?> create(Dispatcher dispatcher) {
@@ -51,8 +59,8 @@ public class DispatcherServiceImpl implements DispatcherService {
             name = dispatcher.getRouter_EN();
             scheduler = Scheduler
                     .match(name, Scheduler.FIFO);
-            TreeSet<String> addressSet = serverService.getServers(dispatcher.getAddress());
-            setAddress(addressSet);
+//            TreeSet<String> addressSet = serverService.getServers(dispatcher.getAddress());
+//            setAddress(addressSet);
             return new ReturnT<>(Constants.SUCCESS, "设置成功");
         }
         return new ReturnT<>(Constants.FAIL, "设置失败，未找到对应的策略");
@@ -75,7 +83,12 @@ public class DispatcherServiceImpl implements DispatcherService {
             scheduler = Scheduler
                     .match("FIFO", Scheduler.FIFO);
         }
-        scheduler.dispatcher.setAddress(address);
+        Map<String, Integer> addressCapacity = new HashMap<>();
+        for (String s : address) {
+            Server server = serverMapper.getServerByAddress(s);
+            addressCapacity.put(s, server.getServer_memory());
+        }
+        scheduler.dispatcher.setAddress(address, addressCapacity);
     }
 
     @Override
