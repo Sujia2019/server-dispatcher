@@ -34,6 +34,12 @@ public class ServerController {
     @RequestMapping(value = "getAll",method = RequestMethod.GET)
     @ResponseBody
     public ReturnT<?> getAll(){
-        return new ReturnT<>(Constants.SUCCESS,serverService.getServers());
+        return new ReturnT<>(Constants.SUCCESS, serverService.getAll());
+    }
+
+    @RequestMapping(value = "getAvailableServers", method = RequestMethod.GET)
+    @ResponseBody
+    public ReturnT<?> getAvailableServers() {
+        return new ReturnT<>(Constants.SUCCESS, serverService.getAvailableServers());
     }
 }

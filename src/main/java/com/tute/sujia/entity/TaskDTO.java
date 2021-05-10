@@ -6,4 +6,5 @@ import lombok.Data;
 public class TaskDTO {
     private String taskName;
     private String loadBalance;
+    private String serverName;
 }

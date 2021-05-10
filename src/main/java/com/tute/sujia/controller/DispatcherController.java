@@ -1,14 +1,22 @@
 package com.tute.sujia.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.tute.sujia.entity.Dispatcher;
 import com.tute.sujia.service.DispatcherService;
 import com.tute.sujia.utils.ReturnT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/dispatcher")
 @RestController
 public class DispatcherController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DispatcherController.class);
     @Autowired
     DispatcherService dispatcherService;
 
@@ -39,7 +47,11 @@ public class DispatcherController {
     @RequestMapping(value = "setDispatcher", method = RequestMethod.POST)
     @ResponseBody
     public ReturnT<?> setDispatcher(@RequestBody String name) {
-        return dispatcherService.setDispatcher(name);
+        LOGGER.info(name);
+
+        JsonObject returnData = new JsonParser().parse(name).getAsJsonObject();
+        String dispatcherName = returnData.get("name").getAsString();
+        return dispatcherService.setDispatcher(dispatcherName);
     }
 
 }

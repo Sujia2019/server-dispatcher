@@ -25,13 +25,13 @@ public class CapacityTaskScheduler extends TaskScheduler {
     private static List<String> littleAddress = new ArrayList<>();
     private static List<String> middleAddress = new ArrayList<>();
     private static List<String> largeAddress = new ArrayList<>();
-    private static int totalCapacity = 0;
-//    @Autowired
+    //    @Autowired
 //    ServerMapper serverMapper;
 
     @Override
     public void setAddress(TreeSet<String> addressSet, Map<String, Integer> addressCapacity) {
         CapacityTaskScheduler.addressCapacity = addressCapacity;
+        int totalCapacity = 0;
         // 计算比例
         for (String s : addressSet) {
             totalCapacity += addressCapacity.get(s);
@@ -96,6 +96,8 @@ public class CapacityTaskScheduler extends TaskScheduler {
 
     @Override
     public String dispatch(Task task) {
+        LOGGER.info("capacity dispatch: {}", task.toString());
+        LOGGER.info("capacity size: {}", capacity.size());
         if (task.getCapacity() <= capacity.get("LITTLE")) {
             deal(little, task);
         } else if (task.getCapacity() <= capacity.get("MIDDLE")) {

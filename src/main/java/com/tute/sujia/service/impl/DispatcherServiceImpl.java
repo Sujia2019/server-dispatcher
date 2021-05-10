@@ -59,8 +59,8 @@ public class DispatcherServiceImpl implements DispatcherService {
             name = dispatcher.getRouter_EN();
             scheduler = Scheduler
                     .match(name, Scheduler.FIFO);
-//            TreeSet<String> addressSet = serverService.getServers(dispatcher.getAddress());
-//            setAddress(addressSet);
+            TreeSet<String> addressSet = serverService.getServers(dispatcher.getAddress());
+            setAddress(addressSet);
             return new ReturnT<>(Constants.SUCCESS, "设置成功");
         }
         return new ReturnT<>(Constants.FAIL, "设置失败，未找到对应的策略");

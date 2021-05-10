@@ -30,6 +30,7 @@ public class FairTaskScheduler extends TaskScheduler {
     public void setAddress(TreeSet<String> addressSet, Map<String, Integer> addressCapacity) {
         FairTaskScheduler.addressSet = addressSet;
         FairTaskScheduler.addressCapacity = addressCapacity;
+        totalCapacity = 0;
         for (String s : addressSet) {
             totalCapacity += addressCapacity.get(s);
             addressCapacity.put(s, addressCapacity.get(s));

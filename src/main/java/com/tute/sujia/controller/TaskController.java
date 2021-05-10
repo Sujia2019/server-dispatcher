@@ -13,8 +13,10 @@ import com.tute.sujia.utils.Constants;
 import com.tute.sujia.utils.ReturnT;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -56,18 +58,18 @@ public class TaskController {
     /**
      * 执行任务---单个执行
      *
-     * @param taskName,serverName
+     * @param taskDTO
      * @return
      */
     @RequestMapping(value = "exec", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnT<?> exec(@RequestBody String taskName, String serverName) {
-        if (Strings.isBlank(serverName)) {
+    public ReturnT<?> exec(@RequestBody TaskDTO taskDTO) {
+        if (Strings.isBlank(taskDTO.getServerName())) {
             return new ReturnT<>(Constants.FAIL, "请选择服务器");
         }
-        Server server = serverService.getServer(serverName);
+        Server server = serverService.getServer(taskDTO.getServerName());
         if (server != null) {
-            return taskService.exec(server.getServer_add(), taskName);
+            return taskService.exec(server.getServer_add(), taskDTO.getTaskName());
         }
         return new ReturnT<>(Constants.FAIL, "未找到该服务器");
     }
@@ -104,11 +106,11 @@ public class TaskController {
      */
     @RequestMapping(value = "addTask", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnT<?> addTask(@RequestBody List<String> taskNames) {
+    public ReturnT<?> addTask(@RequestBody String[] taskNames) {
         if (dispatcherService.getDispatcher() == null) {
             return new ReturnT<>(Constants.FAIL, "请先设置指定的调度算法");
         } else {
-            return taskService.insertQueue(taskNames);
+            return taskService.insertQueue(Arrays.asList(taskNames));
         }
     }
 

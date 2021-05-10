@@ -71,5 +71,15 @@ public class ServerServiceImpl implements ServerService {
         return serverMapper.getServerByName(name);
     }
 
+    @Override
+    public List<Server> getAll() {
+        return serverMapper.getAll();
+    }
+
+    @Override
+    public List<Server> getAvailableServers() {
+        return serverMapper.getAvailableServers();
+    }
+
 
 }

@@ -4,6 +4,7 @@ import com.tute.sujia.entity.Server;
 import com.tute.sujia.utils.ReturnT;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.TreeSet;
 
 
@@ -20,6 +21,10 @@ public interface ServerService {
     TreeSet<String> getServers(String json);
 
     Server getServer(String name);
+
+    List<Server> getAll();
+
+    List<Server> getAvailableServers();
 
 
 }

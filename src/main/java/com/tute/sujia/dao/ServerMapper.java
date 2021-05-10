@@ -53,4 +53,7 @@ public interface ServerMapper {
 
     @Select("select * from server where server_add=#{address}")
     Server getServerByAddress(String address);
+
+    @Select("select * from server where server_status = ${1}")
+    List<Server> getAvailableServers();
 }
